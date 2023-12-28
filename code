@@ -1,0 +1,72 @@
+int lightPin=A0;
+float lightVal;
+int motion = 1;
+int led = 2;
+int state;
+String msg="lightVal=";
+int trigPin=11;
+int echoPin=12;
+int dTime=25;
+float pingTravelTime;
+float pingTravelDistance;
+float distanceToTarget;
+void setup()
+{
+  pinMode(lightPin, INPUT);
+  //Serial.begin(9600);
+  pinMode (motion , INPUT);
+  pinMode (led, OUTPUT);
+    pinMode(trigPin, OUTPUT);
+  pinMode(echoPin, INPUT);
+}
+void loop()
+{
+  lightVal=analogRead(lightPin);
+  //Serial.print(msg);
+  //Serial.println(lightVal);  
+  //delay(500);
+ 
+  if (lightVal> 300)
+  {
+    digitalWrite(led, 0);
+  }
+  else
+  {
+  state = digitalRead(motion);
+  if (state == 1)
+  {
+    digitalWrite(led, 1);
+    delay(2000);
+    digitalWrite(led, 0);
+  }
+    else
+    {
+      digitalWrite(led, 0);
+    }  
+  digitalWrite(trigPin, 0);
+  delayMicroseconds(dTime); 
+  digitalWrite(trigPin, 1);
+  delayMicroseconds(dTime);
+  digitalWrite(trigPin, 0);
+  pingTravelTime=pulseIn(echoPin,1);
+  pingTravelDistance=pingTravelTime*0.01375;//0.014
+  distanceToTarget=pingTravelDistance/2;
+  //delay(dTime);
+  //Serial.print("Ping Travel Time= ");
+  //Serial.println(pingTravelTime);
+  //Serial.print("Target Distance");
+  //Serial.print(distanceToTarget);
+  //Serial.println(" inch");
+  
+  if (distanceToTarget<=5)
+  {
+    digitalWrite(led, 1);
+    delay(500);
+  }
+  else
+  {
+    digitalWrite(led, 0);
+  }
+} 
+}
+  
